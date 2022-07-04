@@ -7,6 +7,8 @@ function createTag(newTagName) {
   return document.createElement(newTagName);
 }
 
+// Récupère les données de l'API, puis ajoute les éléments html correspondants
+
 function createProductsCards() {
   fetch("http://localhost:3000/api/products")
     .then((response) => {
