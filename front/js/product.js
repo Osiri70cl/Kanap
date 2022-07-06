@@ -44,3 +44,42 @@ function fillProductPages() {
 }
 
 fillProductPages();
+
+const selectedColor = document.getElementById("colors");
+const cartButton = document.getElementById("addToCart");
+const selectedQuantity = document.getElementById("quantity");
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
+let productInCart;
+
+const addToCart = () => {
+  if (selectedColor.value == "" || selectedQuantity.value == 0) {
+    alert("Veuillez choisir la couleur ainsi que la quantitée");
+  } else {
+    let newProductInCart = {
+      color: selectedColor.value,
+      id: productId,
+      quantity: new Number(selectedQuantity.value),
+    };
+    productInCart = cart.find((product) => product.id == productId);
+    const findProductIndex = cart.indexOf(productInCart);
+    if (productInCart) {
+      productInCart = cart.find(
+        (product) =>
+          product.color == selectedColor.value && product.id == productId
+      );
+      if (productInCart) {
+        productInCart.quantity =
+          parseInt(productInCart.quantity) + parseInt(selectedQuantity.value);
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } else {
+        cart.push(newProductInCart);
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+    } else {
+      cart.push(newProductInCart);
+      return localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }
+};
+
+cartButton.addEventListener("click", addToCart);
