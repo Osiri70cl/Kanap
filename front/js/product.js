@@ -72,8 +72,8 @@ const addToCart = () => {
           parseInt(productInCart.quantity) + parseInt(selectedQuantity.value);
         localStorage.setItem("cart", JSON.stringify(cart));
       } else {
-        cart.push(newProductInCart);
-        localStorage.setItem("cart", JSON.stringify(cart));
+        cart.splice(findProductIndex, 0, newProductInCart);
+        return localStorage.setItem("cart", JSON.stringify(cart));
       }
     } else {
       cart.push(newProductInCart);
