@@ -45,6 +45,8 @@ function fillProductPages() {
 
 fillProductPages();
 
+//
+
 const selectedColor = document.getElementById("colors");
 const cartButton = document.getElementById("addToCart");
 const selectedQuantity = document.getElementById("quantity");
@@ -57,7 +59,7 @@ const addToCart = () => {
   } else {
     let newProductInCart = {
       color: selectedColor.value,
-      id: productId,
+      _id: productId,
       quantity: new Number(selectedQuantity.value),
     };
     productInCart = cart.find((product) => product.id == productId);
