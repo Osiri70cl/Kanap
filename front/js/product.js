@@ -59,7 +59,7 @@ const addToCart = () => {
   } else {
     let newProductInCart = {
       color: selectedColor.value,
-      _id: productId,
+      id: productId,
       quantity: new Number(selectedQuantity.value),
     };
     productInCart = cart.find((product) => product.id == productId);

@@ -43,6 +43,7 @@ function displayCart() {
       }
       cartItems.innerHTML += cartContent;
       eventListener();
+      getCartTotal();
     });
 }
 
@@ -91,4 +92,23 @@ const eventListener = function () {
   removeButton.forEach((element) => {
     element.addEventListener("click", removeFromCart);
   });
+};
+
+const getUnitQuantities = function () {
+  quantityInputField.setAttribute("value", element.value);
+};
+
+// Quand la quantité dans les <input> change, calcule le total depuis les quantités affichées et le prix des produits récupérés depuis l'API dans la fonction displayCart
+const getCartTotal = function () {
+  let cartTotalPrice = new Number();
+  let cartTotalQuantity = new Number();
+  let i = 0;
+  while (i !== quantityInputField.length) {
+    cartTotalQuantity += Number(quantityInputField[i].value);
+    cartTotalPrice += displayPrice[i] * quantityInputField[i].value;
+    i++;
+  }
+  totalQuantityElement.textContent = cartTotalQuantity;
+  displayedTotal.textContent = cartTotalPrice;
+  eventListener();
 };
