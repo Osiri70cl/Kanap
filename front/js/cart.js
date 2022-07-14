@@ -18,6 +18,7 @@ let displayPrice = [];
 let cartContent = "";
 let i = 0;
 
+// Fonction pour afficher le panier dans le DOM
 function displayCart() {
   fetch("http://localhost:3000/api/products")
     .then((response) => {
@@ -80,6 +81,7 @@ let quantityInputField;
 let getParentArticle;
 let updatedProduct;
 
+// Ajoute un event listener sur les <input> quantité de chaque produit et leur bouton "Supprimer"
 const eventListener = function () {
   quantityInputField = document.querySelectorAll(
     ".cart__item__content__settings__quantity > .itemQuantity"
@@ -114,7 +116,7 @@ const getCartTotal = function () {
   eventListener();
 };
 
-// Compare l'id et la couleur de l'élément 'article' avec ceux contenus dans le panier en localstorage, pour renvoyer au caller (fonction pour supprimer un produit du panier, ou pour mettre à jour la quantité) le produit concerné
+// Compare l'id et  couleur de l'élément 'article' avec ceux contenus dans le panier en localstorage
 const getProductToUpdate = function () {
   let parentArticleDataset = {
     color: getParentArticle.dataset.color,
@@ -142,7 +144,7 @@ const removeFromCart = function () {
   }
 };
 
-// Trouve l'index du produit dans cart pour mettre à jour sa quantité, puis force un recalcul du total
+// Trouve l'index du produit dans le cart pour mettre à jour sa quantité, puis force un recalcul du total
 const pushLocalStorageQuantity = function () {
   getParentArticle = this.closest("article");
   getProductToUpdate();
@@ -160,6 +162,9 @@ const pushLocalStorageQuantity = function () {
 
 // ------------------------- FORMULAIRE DE COMMANDE ------------------------- //
 
+const formInputs = document.querySelectorAll(
+  ".cart__order__form__question > input"
+);
 const formInputsErrors = document.querySelectorAll(
   ".cart__order__form__question > p"
 );
@@ -250,7 +255,7 @@ const mergeInputs = function () {
   };
 };
 
-// Vérifie que tous les champs du formulaire sont valides, et si oui : envoie le contenu du panier, redirige vers la page de confirmation correspondant à l'orderid, et vide le localstorage
+// Vérifie que tous les champs du formulaire sont valides, et si oui : envoie le contenu du panier, redirige vers la page de confirmation correspondant à l'order id, et vide le localstorage
 function sendCartAndInput(event) {
   event.preventDefault();
   if (
