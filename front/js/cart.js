@@ -8,71 +8,7 @@ function createTag(newTagName) {
 
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-let cartItemImage;
-let cartItemImageAlt;
-let productName;
-let productColor;
-let productPrice;
-let productQuantity = [];
-let displayPrice = [];
-let cartContent = "";
-let i = 0;
-
-// Fonction pour afficher le panier dans le DOM
-function displayCart() {
-  fetch("http://localhost:3000/api/products")
-    .then((response) => {
-      return response.json();
-    })
-    .then((APIProductList) => {
-      while (i !== cart.length) {
-        const matchingProduct = APIProductList.find(
-          (product) => product._id === cart[i].id
-        );
-        APIProductList.forEach((productInList) => {
-          if (matchingProduct) {
-            cartItemImage = `${matchingProduct.imageUrl}`;
-            cartItemImageAlt = `${matchingProduct.altTxt}`;
-            productName = `${matchingProduct.name}`;
-            productColor = `${cart[i].color}`;
-            productPrice = `${matchingProduct.price}`;
-          }
-        });
-        createInnerContent();
-        displayPrice.push(productPrice);
-        i++;
-      }
-      cartItems.innerHTML += cartContent;
-      eventListener();
-      getCartTotal();
-      formInputValidation();
-    });
-}
-
-// Crée un nouveau bloc article pour chaque produit du panier
-const createInnerContent = function () {
-  cartContent += `<article class="cart__item" data-id="${cart[i].id}" data-color="${productColor}">
-  <div class="cart__item__img"><img src="${cartItemImage}" alt="${cartItemImageAlt}"></div>
-  <div class="cart__item__content">
-  <div class="cart__item__content__description">
-  <h2>${productName}</h2>
-  <p>${productColor}</p>
-  <p>${productPrice} €</p>
-  </div>
-  <div class="cart__item__content__settings">
-  <div class="cart__item__content__settings__quantity">
-  <p>Qté : </p>
-  <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cart[i].quantity}">
-  </div>
-  <div class="cart__item__content__settings__delete">
-  <p class="deleteItem">Supprimer</p>
-  </div>
-  </div>
-  </div>
-  </article>`;
-};
-
-displayCart();
+///créationd es fonctions supprimer /calculer le total /envoi de la commande qui seront utilisée dans la grosse fonction du cart
 
 const totalQuantityElement = document.getElementById("totalQuantity");
 const displayedTotal = document.getElementById("totalPrice");
@@ -101,7 +37,7 @@ const getUnitQuantities = function () {
   quantityInputField.setAttribute("value", element.value);
 };
 
-// Quand la quantité dans les <input> change, calcule le total depuis les quantités affichées et le prix des produits récupérés depuis l'API dans la fonction displayCart
+// Quand la quantité dans les <input> change, calcule le total depuis les quantités affichées et le prix des produits
 const getCartTotal = function () {
   let cartTotalPrice = new Number();
   let cartTotalQuantity = new Number();
@@ -116,7 +52,7 @@ const getCartTotal = function () {
   eventListener();
 };
 
-// Compare l'id et  couleur de l'élément 'article' avec ceux contenus dans le panier en localstorage
+// Compare l'id et couleur de l'élément 'article' avec ceux contenus dans le panier en localstorage
 const getProductToUpdate = function () {
   let parentArticleDataset = {
     color: getParentArticle.dataset.color,
@@ -159,6 +95,72 @@ const pushLocalStorageQuantity = function () {
     convertCartToArray();
   }
 };
+
+// Crée un nouveau bloc article pour chaque produit du panier
+const createInnerContent = function () {
+  cartContent += `<article class="cart__item" data-id="${cart[i].id}" data-color="${productColor}">
+  <div class="cart__item__img"><img src="${cartItemImage}" alt="${cartItemImageAlt}"></div>
+  <div class="cart__item__content">
+  <div class="cart__item__content__description">
+  <h2>${productName}</h2>
+  <p>${productColor}</p>
+  <p>${productPrice} €</p>
+  </div>
+  <div class="cart__item__content__settings">
+  <div class="cart__item__content__settings__quantity">
+  <p>Qté : </p>
+  <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${cart[i].quantity}">
+  </div>
+  <div class="cart__item__content__settings__delete">
+  <p class="deleteItem">Supprimer</p>
+  </div>
+  </div>
+  </div>
+  </article>`;
+};
+
+let cartItemImage;
+let cartItemImageAlt;
+let productName;
+let productColor;
+let productPrice;
+let productQuantity = [];
+let displayPrice = [];
+let cartContent = "";
+let i = 0;
+
+// Fonction principale du panier
+function displayCart() {
+  fetch("http://localhost:3000/api/products")
+    .then((response) => {
+      return response.json();
+    })
+    .then((APIProductList) => {
+      while (i !== cart.length) {
+        const matchingProduct = APIProductList.find(
+          (product) => product._id === cart[i].id
+        );
+        APIProductList.forEach((productInList) => {
+          if (matchingProduct) {
+            cartItemImage = `${matchingProduct.imageUrl}`;
+            cartItemImageAlt = `${matchingProduct.altTxt}`;
+            productName = `${matchingProduct.name}`;
+            productColor = `${cart[i].color}`;
+            productPrice = `${matchingProduct.price}`;
+          }
+        });
+        createInnerContent();
+        displayPrice.push(productPrice);
+        i++;
+      }
+      cartItems.innerHTML += cartContent;
+      eventListener();
+      getCartTotal();
+      formInputValidation();
+    });
+}
+
+displayCart();
 
 // ------------------------- FORMULAIRE DE COMMANDE ------------------------- //
 
